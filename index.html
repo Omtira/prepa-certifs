@@ -410,7 +410,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       seeFam: "Voir la famille →", inPrep: "Examens en préparation.",
       formationCardT: "Les cours Claude Academy, résumés en français", formationCardM: "Claude 101, Claude Code, MCP, API", nCourses: "{n} cours",
       how1t: "Lis la fiche", how1: "Chaque examen suit son programme officiel « Skills measured », domaine par domaine, avec le poids de chaque domaine.",
-      how2t: "Entraîne-toi", how2: "Correction immédiate, explication et lien vers la documentation officielle. L'ordre des réponses change à chaque passage.",
+      how2t: "Entraîne-toi", how2: "Correction immédiate, explication et lien vers la documentation officielle. L'ordre des questions et des réponses change à chaque passage.",
       how3t: "Passe l'examen blanc", how3: "Chronomètre, correction à la fin, score sur 1000 et résultat par domaine pour savoir quoi revoir.",
       disclaimer: "Questions originales rédigées à partir des programmes officiels et de la documentation Microsoft et Anthropic. Ce ne sont pas des questions d'examen réelles. Le score sur 1000 est une estimation : l'éditeur calcule son score autrement. Ta progression reste dans ce navigateur.",
       newsLbl: "Nouveautés", newsAll: "Toutes les infos", newsPrev: "Info précédente", newsNext: "Info suivante", newsAria: "Bande d'infos", newsPause: "Mettre le défilement en pause", newsPlay: "Relancer le défilement", infosT: "Nouveautés et infos", infosP: "Changements d'examens, retraits, nouveaux programmes et mises à jour de la formation. Chaque info renvoie à sa source officielle, contrôlée par le script de vérification du site.", infosSrc: "Source officielle", infosPage: "Voir la page",
@@ -454,7 +454,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       seeFam: "See the family →", inPrep: "Exams coming soon.",
       formationCardT: "The Claude Academy courses, summarized in French", formationCardM: "Claude 101, Claude Code, MCP, API", nCourses: "{n} courses",
       how1t: "Read the study sheet", how1: "Each exam follows its official “Skills measured” outline, domain by domain, with the weight of each domain.",
-      how2t: "Practice", how2: "Instant feedback, an explanation and a link to the official documentation. Answer order changes on every attempt.",
+      how2t: "Practice", how2: "Instant feedback, an explanation and a link to the official documentation. Question and answer order change on every attempt.",
       how3t: "Take the mock exam", how3: "A timer, grading at the end, a score out of 1000 and results by domain so you know what to review.",
       disclaimer: "Original questions written from the official skills outlines and the Microsoft and Anthropic documentation. They are not real exam questions. The score out of 1000 is an estimate: the vendor scores exams differently. Your progress stays in this browser.",
       newsLbl: "What's new", newsAll: "All news", newsPrev: "Previous item", newsNext: "Next item", newsAria: "News band", newsPause: "Pause the ticker", newsPlay: "Resume the ticker", infosT: "News and updates", infosP: "Exam changes, retirements, new skills outlines and course updates. Each item links to its official source, checked by the site's verification script.", infosSrc: "Official source", infosPage: "Open the page",
@@ -859,7 +859,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     var o = P.o, it = P.items[P.i], q = it.q, n = P.items.length;
     var good = P.picks.filter(function (p, j) { return p === P.items[j].q.a; }).length;
     pLayout(o.crumbs + '<header class="page-head"><span class="code-tag">' + esc(o.label) + '</span><div class="qhead"><h1>' + esc(o.title) + '</h1><span class="qcount">' + (P.i + 1) + " / " + n + " · " + esc(t(good === 1 ? "good1" : "goodN", { n: good })) + '</span></div><div class="qbar"><i style="width:' + Math.round(100 * P.i / n) + '%"></i></div></header>' +
-      '<div class="qcard"><span class="qtag">' + esc(q.domNom) + " · Q" + q.n + '</span><p class="qtext">' + mi(q.q) + '</p><div class="opts" role="group" aria-label="' + esc(t("answersAria")) + '">' +
+      '<div class="qcard"><span class="qtag">' + esc(q.domNom) + '</span><p class="qtext">' + mi(q.q) + '</p><div class="opts" role="group" aria-label="' + esc(t("answersAria")) + '">' +
       it.opts.map(function (x) { return '<button type="button" class="opt" data-orig="' + x.orig + '"><span class="l">' + x.l + ")</span><span>" + mi(x.t) + "</span></button>"; }).join("") +
       '</div><div id="after"></div></div><p class="small">' + t("keysHint") + "</p>");
     view.querySelectorAll(".opt").forEach(function (b) { b.addEventListener("click", function () { pAnswer(b.dataset.orig); }); });
