@@ -332,6 +332,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .news-ctl button { width: 30px; height: 30px; border-radius: 6px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: 1.1rem; }
 .news-ctl button:hover { background: var(--sunk); color: var(--ink); }
 .news-ctl .n { font: 500 0.75rem var(--f-mono); color: var(--muted); min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
+.news.ticker .news-item { padding: 0; overflow: hidden; box-shadow: none; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent); }
+.news-track { display: flex; width: max-content; animation: ticker var(--dur, 60s) linear infinite; }
+.news.ticker .news-item:hover .news-track, .news.ticker .news-item:focus-within .news-track, .news.paused .news-track { animation-play-state: paused; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.news-run { display: flex; align-items: center; flex: none; }
+.tk { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; white-space: nowrap; font-size: 0.92rem; }
+.tk::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--line); margin: 0 22px; }
+.tk .c { font: 600 0.74rem var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--fam); }
+.tk time { font: 500 0.78rem var(--f-mono); color: var(--muted); }
+.tk a { color: var(--ink); text-decoration: none; }
+.tk a:hover { color: var(--accent); text-decoration: underline; }
+.news-ctl .tog { font-size: 0.8rem; }
 .news-all { flex: none; display: flex; align-items: center; padding: 0 14px; border-left: 1px solid var(--line); font-size: 0.86rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .infos { display: flex; flex-direction: column; gap: 12px; }
 .info { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 6px 16px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: inset 3px 0 0 var(--fam, var(--accent)); }
@@ -343,7 +355,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .news { flex-wrap: wrap; }
   .news-lbl { border-right: 0; }
   .news-item { flex-basis: 100%; order: 3; border-top: 1px solid var(--line); }
-  .news-item .txt { white-space: normal; }
+  .news:not(.ticker) .news-item .txt { white-space: normal; }
   .news-ctl, .news-all { border-left: 0; }
   .news-ctl { margin-left: auto; }
   .info { grid-template-columns: 1fr; }
@@ -399,7 +411,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       how2t: "Entraîne-toi", how2: "Correction immédiate, explication et lien vers la documentation officielle. L'ordre des réponses change à chaque passage.",
       how3t: "Passe l'examen blanc", how3: "Chronomètre, correction à la fin, score sur 1000 et résultat par domaine pour savoir quoi revoir.",
       disclaimer: "Questions originales rédigées à partir des programmes officiels et de la documentation Microsoft et Anthropic. Ce ne sont pas des questions d'examen réelles. Le score sur 1000 est une estimation : l'éditeur calcule son score autrement. Ta progression reste dans ce navigateur.",
-      newsLbl: "Nouveautés", newsAll: "Toutes les infos", newsPrev: "Info précédente", newsNext: "Info suivante", newsAria: "Bande d'infos", infosT: "Nouveautés et infos", infosP: "Changements d'examens, retraits, nouveaux programmes et mises à jour de la formation. Chaque info renvoie à sa source officielle, contrôlée par le script de vérification du site.", infosSrc: "Source officielle", infosPage: "Voir la page",
+      newsLbl: "Nouveautés", newsAll: "Toutes les infos", newsPrev: "Info précédente", newsNext: "Info suivante", newsAria: "Bande d'infos", newsPause: "Mettre le défilement en pause", newsPlay: "Relancer le défilement", infosT: "Nouveautés et infos", infosP: "Changements d'examens, retraits, nouveaux programmes et mises à jour de la formation. Chaque info renvoie à sa source officielle, contrôlée par le script de vérification du site.", infosSrc: "Source officielle", infosPage: "Voir la page",
       resetAsk: "Remettre ma progression à zéro", resetQ: "Effacer toutes tes réponses, examens blancs et sections lues dans ce navigateur ? C'est définitif.", resetYes: "Tout effacer", cancel: "Annuler", resetDone: "Progression effacée.",
       mockChip: "Blanc : {s}", inProgress: "En cours", nQuestions: "{n} questions", nDomains: "{n} domaines", seen: "{a}/{b} vues", frOnly: "En français",
       formationH: "Formation : les cours Claude Academy", formationP: "Résumés en français, exercices et quiz. Ce sont les cours qu'Anthropic recommande pour préparer CCAR-F.",
@@ -443,7 +455,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       how2t: "Practice", how2: "Instant feedback, an explanation and a link to the official documentation. Answer order changes on every attempt.",
       how3t: "Take the mock exam", how3: "A timer, grading at the end, a score out of 1000 and results by domain so you know what to review.",
       disclaimer: "Original questions written from the official skills outlines and the Microsoft and Anthropic documentation. They are not real exam questions. The score out of 1000 is an estimate: the vendor scores exams differently. Your progress stays in this browser.",
-      newsLbl: "What's new", newsAll: "All news", newsPrev: "Previous item", newsNext: "Next item", newsAria: "News band", infosT: "News and updates", infosP: "Exam changes, retirements, new skills outlines and course updates. Each item links to its official source, checked by the site's verification script.", infosSrc: "Official source", infosPage: "Open the page",
+      newsLbl: "What's new", newsAll: "All news", newsPrev: "Previous item", newsNext: "Next item", newsAria: "News band", newsPause: "Pause the ticker", newsPlay: "Resume the ticker", infosT: "News and updates", infosP: "Exam changes, retirements, new skills outlines and course updates. Each item links to its official source, checked by the site's verification script.", infosSrc: "Official source", infosPage: "Open the page",
       resetAsk: "Reset my progress", resetQ: "Erase all your answers, mock exams and read sections in this browser? This cannot be undone.", resetYes: "Erase everything", cancel: "Cancel", resetDone: "Progress erased.",
       mockChip: "Mock: {s}", inProgress: "In progress", nQuestions: "{n} questions", nDomains: "{n} domains", seen: "{a}/{b} seen", frOnly: "French only",
       formationH: "Course: the Claude Academy courses", formationP: "Summaries in French, with exercises and quizzes. These are the courses Anthropic recommends to prepare for CCAR-F.",
@@ -678,8 +690,33 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       '<div class="news-ctl"><button type="button" id="news-prev" aria-label="' + esc(t("newsPrev")) + '">‹</button><span class="n"></span><button type="button" id="news-next" aria-label="' + esc(t("newsNext")) + '">›</button></div>' +
       '<a class="news-all" href="#infos">' + esc(t("newsAll")) + " →</a></section>";
   }
+  function tickerItem(a, dup) {
+    var href = actuHref(a), ti = dup ? ' tabindex="-1"' : "";
+    return '<span class="tk" data-fam="' + actuFam(a) + '"><span class="c">' + esc(famName(a.fam)) + '</span><time datetime="' + a.date + '">' + esc(fmtDate(a.date)) + "</time>" +
+      (href ? '<a href="' + href + '"' + ti + ">" + esc(a.t) + "</a>" : "<span>" + esc(a.t) + "</span>") + "</span>";
+  }
+  function wireTicker(box) {
+    // Bandeau défilant façon chaîne d'infos : deux copies identiques, la piste glisse de -50 % en boucle.
+    var it = box.querySelector(".news-item"), list = D.actus;
+    box.classList.add("ticker");
+    it.innerHTML = '<div class="news-track"><div class="news-run">' + list.map(function (a) { return tickerItem(a); }).join("") +
+      '</div><div class="news-run" aria-hidden="true">' + list.map(function (a) { return tickerItem(a, true); }).join("") + "</div></div>";
+    var run = it.querySelector(".news-run"), track = it.querySelector(".news-track");
+    track.style.setProperty("--dur", Math.max(20, Math.round(run.scrollWidth / 70)) + "s");
+    var ctl = box.querySelector(".news-ctl");
+    ctl.innerHTML = '<button type="button" class="tog" id="news-tog" aria-pressed="false" aria-label="' + esc(t("newsPause")) + '">❚❚</button>';
+    var tog = document.getElementById("news-tog");
+    tog.addEventListener("click", function () {
+      var p = box.classList.toggle("paused");
+      tog.setAttribute("aria-pressed", p ? "true" : "false");
+      tog.setAttribute("aria-label", t(p ? "newsPlay" : "newsPause"));
+      tog.textContent = p ? "▶" : "❚❚";
+    });
+  }
   function wireNews() {
-    if (!document.getElementById("news")) return;
+    var box = document.getElementById("news"); if (!box) return;
+    var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!still && D.actus.length > 1) { wireTicker(box); return; }
     NEWS.i = Math.min(NEWS.i, D.actus.length - 1); drawNews();
     document.getElementById("news-prev").addEventListener("click", function () { stepNews(-1); });
     document.getElementById("news-next").addEventListener("click", function () { stepNews(1); });
