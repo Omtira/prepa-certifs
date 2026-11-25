@@ -81,6 +81,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .search { position: relative; margin-left: auto; flex: 0 1 260px; min-width: 0; }
 .search input { width: 100%; font: inherit; font-size: 0.92rem; padding: 7px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); }
 .results { position: absolute; right: 0; top: calc(100% + 6px); width: min(360px, calc(100vw - 32px)); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(10, 20, 40, 0.14); padding: 6px; z-index: 20; display: flex; flex-direction: column; }
+.results[hidden] { display: none; }
 .results a { display: grid; grid-template-columns: 74px 1fr; gap: 10px; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--ink); font-size: 0.9rem; }
 .results a:hover, .results a.sel { background: var(--sunk); }
 .results a .c { font-family: var(--f-mono); font-size: 0.8rem; color: var(--fam); font-weight: 500; }
