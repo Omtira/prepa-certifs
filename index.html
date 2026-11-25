@@ -317,6 +317,38 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .figs b { font-size: 1.3rem; }
   .top-in { gap: 8px; }
 }
+.news { display: flex; align-items: stretch; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+.news-lbl { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--sunk); font: 600 0.72rem var(--f-mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); border-right: 1px solid var(--line); }
+.news-lbl i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--glow); animation: pulse 2.4s var(--ease) infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--glow); } 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.news-item { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 0.92rem; box-shadow: inset 3px 0 0 var(--fam, var(--accent)); }
+.news-item.enter { animation: newsIn .45s var(--ease); }
+@keyframes newsIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.news-item time { flex: none; font: 500 0.78rem var(--f-mono); color: var(--muted); }
+.news-item .txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news-item a.txt { color: var(--ink); text-decoration: none; }
+.news-item a.txt:hover { color: var(--accent); text-decoration: underline; }
+.news-ctl { flex: none; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-left: 1px solid var(--line); }
+.news-ctl button { width: 30px; height: 30px; border-radius: 6px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: 1.1rem; }
+.news-ctl button:hover { background: var(--sunk); color: var(--ink); }
+.news-ctl .n { font: 500 0.75rem var(--f-mono); color: var(--muted); min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
+.news-all { flex: none; display: flex; align-items: center; padding: 0 14px; border-left: 1px solid var(--line); font-size: 0.86rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.infos { display: flex; flex-direction: column; gap: 12px; }
+.info { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 6px 16px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: inset 3px 0 0 var(--fam, var(--accent)); }
+.info time { font: 500 0.82rem var(--f-mono); color: var(--muted); }
+.info p { margin: 0; max-width: 70ch; }
+.info .links { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.86rem; }
+.info .fam-t { font: 500 0.8rem var(--f-mono); color: var(--fam); }
+@media (max-width: 720px) {
+  .news { flex-wrap: wrap; }
+  .news-lbl { border-right: 0; }
+  .news-item { flex-basis: 100%; order: 3; border-top: 1px solid var(--line); }
+  .news-item .txt { white-space: normal; }
+  .news-ctl, .news-all { border-left: 0; }
+  .news-ctl { margin-left: auto; }
+  .info { grid-template-columns: 1fr; }
+  .info .links { grid-column: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
@@ -367,6 +399,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       how2t: "Entraîne-toi", how2: "Correction immédiate, explication et lien vers la documentation officielle. L'ordre des réponses change à chaque passage.",
       how3t: "Passe l'examen blanc", how3: "Chronomètre, correction à la fin, score sur 1000 et résultat par domaine pour savoir quoi revoir.",
       disclaimer: "Questions originales rédigées à partir des programmes officiels et de la documentation Microsoft et Anthropic. Ce ne sont pas des questions d'examen réelles. Le score sur 1000 est une estimation : l'éditeur calcule son score autrement. Ta progression reste dans ce navigateur.",
+      newsLbl: "Nouveautés", newsAll: "Toutes les infos", newsPrev: "Info précédente", newsNext: "Info suivante", newsAria: "Bande d'infos", infosT: "Nouveautés et infos", infosP: "Changements d'examens, retraits, nouveaux programmes et mises à jour de la formation. Chaque info renvoie à sa source officielle, contrôlée par le script de vérification du site.", infosSrc: "Source officielle", infosPage: "Voir la page",
       resetAsk: "Remettre ma progression à zéro", resetQ: "Effacer toutes tes réponses, examens blancs et sections lues dans ce navigateur ? C'est définitif.", resetYes: "Tout effacer", cancel: "Annuler", resetDone: "Progression effacée.",
       mockChip: "Blanc : {s}", inProgress: "En cours", nQuestions: "{n} questions", nDomains: "{n} domaines", seen: "{a}/{b} vues", frOnly: "En français",
       formationH: "Formation : les cours Claude Academy", formationP: "Résumés en français, exercices et quiz. Ce sont les cours qu'Anthropic recommande pour préparer CCAR-F.",
@@ -410,6 +443,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       how2t: "Practice", how2: "Instant feedback, an explanation and a link to the official documentation. Answer order changes on every attempt.",
       how3t: "Take the mock exam", how3: "A timer, grading at the end, a score out of 1000 and results by domain so you know what to review.",
       disclaimer: "Original questions written from the official skills outlines and the Microsoft and Anthropic documentation. They are not real exam questions. The score out of 1000 is an estimate: the vendor scores exams differently. Your progress stays in this browser.",
+      newsLbl: "What's new", newsAll: "All news", newsPrev: "Previous item", newsNext: "Next item", newsAria: "News band", infosT: "News and updates", infosP: "Exam changes, retirements, new skills outlines and course updates. Each item links to its official source, checked by the site's verification script.", infosSrc: "Official source", infosPage: "Open the page",
       resetAsk: "Reset my progress", resetQ: "Erase all your answers, mock exams and read sections in this browser? This cannot be undone.", resetYes: "Erase everything", cancel: "Cancel", resetDone: "Progress erased.",
       mockChip: "Mock: {s}", inProgress: "In progress", nQuestions: "{n} questions", nDomains: "{n} domains", seen: "{a}/{b} seen", frOnly: "French only",
       formationH: "Course: the Claude Academy courses", formationP: "Summaries in French, with exercises and quizzes. These are the courses Anthropic recommends to prepare for CCAR-F.",
@@ -608,6 +642,62 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     var n = examQuestions(TRY.e).length;
     document.getElementById("try-msg").innerHTML = "<b>" + esc(ok ? t("tryOk") : t("tryKo", { l: right.l })) + '</b> <a href="#' + TRY.e.id + '-entrainement">' + esc(t("tryMore", { c: n })) + "</a>";
   }
+  // ---------- Bande d'infos ----------
+  var NEWS = { i: 0, timer: null };
+  function actuHref(a) {
+    if (!a.lien || a.lien === "-") return null;
+    var m = a.lien.match(/^formation-m(\d+)$/);
+    if (m) return D.formations[+m[1] - 1] ? "#" + a.lien : null;
+    return D.examens.some(function (e) { return e.id === a.lien; }) ? "#" + a.lien : null;
+  }
+  function actuFam(a) { return FAM[a.fam] ? a.fam : "claude"; }
+  function famName(id) { return FAM[id] ? FAM[id].nom : (id === "formation" ? t("formation") : id); }
+  function drawNews() {
+    var box = document.getElementById("news"); if (!box) return;
+    var list = D.actus, a = list[NEWS.i], it = box.querySelector(".news-item"), href = actuHref(a);
+    it.setAttribute("data-fam", actuFam(a));
+    it.innerHTML = '<time datetime="' + a.date + '">' + esc(fmtDate(a.date)) + "</time>" +
+      (href ? '<a class="txt" href="' + href + '" title="' + esc(a.t) + '">' + esc(a.t) + "</a>" : '<span class="txt" title="' + esc(a.t) + '">' + esc(a.t) + "</span>");
+    it.classList.remove("enter"); void it.offsetWidth; it.classList.add("enter");
+    box.querySelector(".n").textContent = (NEWS.i + 1) + "/" + list.length;
+  }
+  function stepNews(d) { var n = D.actus.length; NEWS.i = (NEWS.i + d + n) % n; drawNews(); }
+  function startNews() {
+    clearInterval(NEWS.timer);
+    var box = document.getElementById("news"); if (!box || D.actus.length < 2) return;
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    NEWS.timer = setInterval(function () {
+      if (!document.body.contains(box)) { clearInterval(NEWS.timer); return; }
+      if (!box.matches(":hover") && !box.contains(document.activeElement) && !document.hidden) stepNews(1);
+    }, 7000);
+  }
+  function newsBand() {
+    if (!(D.actus || []).length) return "";
+    return '<section class="news" id="news" aria-label="' + esc(t("newsAria")) + '"><span class="news-lbl"><i aria-hidden="true"></i>' + esc(t("newsLbl")) + "</span>" +
+      '<div class="news-item"></div>' +
+      '<div class="news-ctl"><button type="button" id="news-prev" aria-label="' + esc(t("newsPrev")) + '">‹</button><span class="n"></span><button type="button" id="news-next" aria-label="' + esc(t("newsNext")) + '">›</button></div>' +
+      '<a class="news-all" href="#infos">' + esc(t("newsAll")) + " →</a></section>";
+  }
+  function wireNews() {
+    if (!document.getElementById("news")) return;
+    NEWS.i = Math.min(NEWS.i, D.actus.length - 1); drawNews();
+    document.getElementById("news-prev").addEventListener("click", function () { stepNews(-1); });
+    document.getElementById("news-next").addEventListener("click", function () { stepNews(1); });
+    startNews();
+  }
+  function viewInfos() {
+    var html = '<div class="main">' + crumbs([[t("home"), "accueil"], [t("newsLbl")]]) +
+      '<header class="page-head"><h1>' + esc(t("infosT")) + '</h1><p class="lede">' + esc(t("infosP")) + "</p></header>" +
+      '<div class="infos">' + (D.actus || []).map(function (a) {
+        var href = actuHref(a);
+        return '<article class="info" data-fam="' + actuFam(a) + '"><div><time datetime="' + a.date + '">' + esc(fmtDate(a.date)) + '</time><div class="fam-t">' + esc(famName(a.fam)) + "</div></div><p>" + esc(a.t) + "</p>" +
+          '<div class="links">' + (href ? '<a href="' + href + '">' + esc(t("infosPage")) + " →</a>" : "") +
+          '<a href="' + esc(a.src) + '" target="_blank" rel="noopener">' + esc(t("infosSrc")) + " ↗</a></div></article>";
+      }).join("") + "</div></div>";
+    setView(html);
+    document.title = t("infosT") + " · Prépa Certifs";
+  }
+
   function viewHome() {
     var nqs = D.examens.reduce(function (a, e) { return a + examQuestions(e).length; }, 0);
     var html =
@@ -615,7 +705,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       '<section class="hero"><div><h1>' + esc(t("heroA")) + "<em>" + esc(t("heroB")) + "</em>" + esc(t("heroC")) + "</h1>" +
       '<p class="lede">' + esc(t("heroLede")) + "</p>" +
       '<div class="figs"><div><b data-to="' + D.examens.length + '">' + D.examens.length + "</b><span>" + esc(t("figExams")) + '</span></div><div><b data-to="' + nqs + '">' + nqs + "</b><span>" + esc(t("figQs")) + '</span></div><div><b data-to="' + D.formations.length + '">' + D.formations.length + "</b><span>" + esc(t("figCourses")) + "</span></div></div></div>" +
-      '<div class="try" id="try"></div></section>' +
+      '<div class="try" id="try"></div></section>' + newsBand() +
       D.familles.map(function (f) {
         var cards = famExams(f.id).map(examCard).join("");
         if (f.id === "claude" && D.formations.length) {
@@ -631,7 +721,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       "</div>";
     setView(html);
     view.querySelectorAll(".figs b").forEach(countUp);
-    drawTry();
+    drawTry(); wireNews();
     var ask = document.getElementById("reset-ask"), box = document.getElementById("reset-confirm");
     ask.addEventListener("click", function () { ask.hidden = true; box.hidden = false; document.getElementById("reset-no").focus(); });
     document.getElementById("reset-no").addEventListener("click", function () { box.hidden = true; ask.hidden = false; ask.focus(); });
@@ -924,7 +1014,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     if (M && !(h === M.id + "-examen")) { clearInterval(tick); M = null; }
     P = null;
     var fam = null;
-    if ((m = h.match(/^famille-(.+)$/)) && FAM[m[1]]) { fam = m[1]; viewFamily(FAM[m[1]]); }
+    if (h === "infos") viewInfos();
+    else if ((m = h.match(/^famille-(.+)$/)) && FAM[m[1]]) { fam = m[1]; viewFamily(FAM[m[1]]); }
     else if ((m = h.match(/^formation-m(\d+)(?:-(.+))?$/)) && D.formations[+m[1] - 1]) {
       fam = "claude";
       var fm = D.formations[+m[1] - 1], rest = m[2] || "", key = "formation-m" + fm.n;
