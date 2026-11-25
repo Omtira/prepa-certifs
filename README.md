@@ -6,4 +6,4 @@ Site : https://omtira.github.io/prepa-certifs/
 
 Site statique (une page `index.html` et un fichier `data.json`), généré à partir des fiches d'examen en Markdown. Chaque réponse cite sa source dans la documentation officielle ; les sources sont vérifiées automatiquement avant chaque publication.
 
-Site indépendant, non affilié à Microsoft, GitHub ni Anthropic.
+Site indépendant, non affilié à Microsoft, GitHub, Anthropic ni Atlassian.
