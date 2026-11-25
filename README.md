@@ -1,6 +1,6 @@
 # Prépa Certifs
 
-Révise tes certifications Claude, Copilot, GitHub, Power Platform et Azure : fiches par domaine, questions sourcées sur la documentation officielle, entraînement et examen blanc chronométré.
+Révise tes certifications Claude, Copilot, GitHub, Power Platform, Azure et Jira : fiches par domaine, questions sourcées sur la documentation officielle, entraînement et examen blanc chronométré.
 
 Site : https://omtira.github.io/prepa-certifs/
 
