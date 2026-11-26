@@ -1174,7 +1174,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     if (!keepView) view.innerHTML = '<p class="small">' + esc(t("loading")) + "</p>";
     // no-cache : le navigateur revalide le fichier (réponse 304 si inchangé), pour ne pas servir d'anciennes questions après une publication.
     fetch(file, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
-      CACHE[file] = d; apply(d); if (M) M = null; route();
+      CACHE[file] = d;
+      if (file !== (L === "en" ? "data-en.json" : "data.json")) return; // langue changée pendant le chargement : la réponse la plus récente s'applique
+      apply(d); if (M) M = null; route();
     }).catch(function () {
       view.innerHTML = '<p class="notice">' + esc(t("loadErr")) + "</p>";
     });
