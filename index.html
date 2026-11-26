@@ -418,8 +418,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       mockChip: "Blanc : {s}", inProgress: "En cours", nQuestions: "{n} questions", nDomains: "{n} domaines", seen: "{a}/{b} vues", frOnly: "En français",
       formationH: "Formation : les cours Claude Academy", formationP: "Résumés en français, exercices et quiz. Ce sont les cours qu'Anthropic recommande pour préparer CCAR-F.",
       sectionsRead: "{a}/{b} sections lues", quizScore: "Quiz : {a}/{b}",
-      overview: "Présentation", byDomain: "Fiches par domaine", practice: "S'entraîner", allQs: "Toutes les questions", reviewMistakes: "Revoir mes erreurs", mockExam: "Examen blanc", min: "{n} min",
-      resumeMock: "Reprendre l'examen blanc", mockMeta: "{n} questions · {m} min · seuil {s}/1000", practiceT: "Entraînement", practiceMeta: "Correction après chaque question · {a}/{b} déjà vues",
+      overview: "Présentation", byDomain: "Fiches par domaine", practice: "S'entraîner", allQs: "Série au hasard", reviewMistakes: "Revoir mes erreurs", mockExam: "Examen blanc", min: "{n} min",
+      resumeMock: "Reprendre l'examen blanc", mockMeta: "{n} questions · {m} min · seuil {s}/1000", practiceT: "Entraînement", practiceMeta: "{n} questions au hasard, corrigées une à une · {a}/{b} de la banque déjà vues",
       missedMeta: "{n} à reprendre", mocksLine: "Examens blancs : {n} · meilleur score {b}/1000, dernier {l}/1000.",
       officialProg: "Programme officiel", ofExam: "{p} % de l'examen", qCount1: "1 question", qCountN: "{n} questions", rightOf: "{a}/{b} justes", notStarted: "Pas commencé",
       progDate: "Programme « Skills measured » du {d}. Vérifie la date sur le guide officiel avant ton examen : Microsoft le met à jour régulièrement.",
@@ -428,7 +428,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       answersAria: "Réponses", good1: "{n} bonne", goodN: "{n} bonnes", keysHint: "Clavier : <span class=\"kbd\">a</span> à <span class=\"kbd\">d</span> pour répondre, <span class=\"kbd\">Entrée</span> pour continuer.",
       rightAns: "Bonne réponse.", expected: "Réponse attendue : {l})", source: "Source officielle ↗", seeResult: "Voir le bilan", nextQ: "Question suivante →",
       summary: "Bilan : {a} / {b}", summaryKo: "Relis les explications ci-dessous, puis reprends tes erreurs.", summaryOk: "Aucune erreur sur cette série.", answer: "Réponse :", again: "Recommencer cette série", back: "Retour",
-      mockLede: "{n} questions dans un ordre aléatoire, {m} minutes. Tu peux naviguer entre les questions et en marquer pour y revenir. La correction arrive à la fin, avec un score sur 1000 et le détail par domaine.",
+      mockBank: "Les {n} questions sont tirées parmi les {b} de la banque, au prorata du poids des domaines, en commençant par celles que tu n'as pas encore vues.", mockLede: "{n} questions dans un ordre aléatoire, {m} minutes. Tu peux naviguer entre les questions et en marquer pour y revenir. La correction arrive à la fin, avec un score sur 1000 et le détail par domaine.",
       mockNotice: "Seuil de réussite : {s}/1000. Ici le score est proportionnel au nombre de bonnes réponses ; le vrai examen utilise un score pondéré, et ses questions sont différentes.",
       resume: "Reprendre ({t} restantes)", restart: "Recommencer à zéro", start: "Commencer l'examen blanc", myMocks: "Tes examens blancs", goodAnswers: "{a}/{b} bonnes réponses",
       answered: "{a}/{b} répondues", finish: "Terminer", questionN: "Question {a} / {b}", flag: "Marquer pour revoir", prev: "← Précédente", next: "Suivante →", gotoQ: "Aller à une question",
@@ -462,8 +462,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       mockChip: "Mock: {s}", inProgress: "In progress", nQuestions: "{n} questions", nDomains: "{n} domains", seen: "{a}/{b} seen", frOnly: "French only",
       formationH: "Course: the Claude Academy courses", formationP: "Summaries in French, with exercises and quizzes. These are the courses Anthropic recommends to prepare for CCAR-F.",
       sectionsRead: "{a}/{b} sections read", quizScore: "Quiz: {a}/{b}",
-      overview: "Overview", byDomain: "Study sheets by domain", practice: "Practice", allQs: "All questions", reviewMistakes: "Review my mistakes", mockExam: "Mock exam", min: "{n} min",
-      resumeMock: "Resume the mock exam", mockMeta: "{n} questions · {m} min · pass mark {s}/1000", practiceT: "Practice", practiceMeta: "Feedback after each question · {a}/{b} already seen",
+      overview: "Overview", byDomain: "Study sheets by domain", practice: "Practice", allQs: "Random set", reviewMistakes: "Review my mistakes", mockExam: "Mock exam", min: "{n} min",
+      resumeMock: "Resume the mock exam", mockMeta: "{n} questions · {m} min · pass mark {s}/1000", practiceT: "Practice", practiceMeta: "{n} random questions, graded one by one · {a}/{b} of the bank already seen",
       missedMeta: "{n} to retry", mocksLine: "Mock exams: {n} · best score {b}/1000, last {l}/1000.",
       officialProg: "Official skills outline", ofExam: "{p}% of the exam", qCount1: "1 question", qCountN: "{n} questions", rightOf: "{a}/{b} correct", notStarted: "Not started",
       progDate: "“Skills measured” outline dated {d}. Check the date on the official study guide before your exam: Microsoft updates it regularly.",
@@ -472,7 +472,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       answersAria: "Answers", good1: "{n} correct", goodN: "{n} correct", keysHint: "Keyboard: <span class=\"kbd\">a</span> to <span class=\"kbd\">d</span> to answer, <span class=\"kbd\">Enter</span> to continue.",
       rightAns: "Correct.", expected: "Expected answer: {l})", source: "Official source ↗", seeResult: "See the summary", nextQ: "Next question →",
       summary: "Summary: {a} / {b}", summaryKo: "Read the explanations below, then retry your mistakes.", summaryOk: "No mistakes in this set.", answer: "Answer:", again: "Restart this set", back: "Back",
-      mockLede: "{n} questions in random order, {m} minutes. You can move between questions and flag some to come back to. Grading comes at the end, with a score out of 1000 and a breakdown by domain.",
+      mockBank: "The {n} questions are drawn from the {b} in the bank, in proportion to domain weights, starting with the ones you haven't seen yet.", mockLede: "{n} questions in random order, {m} minutes. You can move between questions and flag some to come back to. Grading comes at the end, with a score out of 1000 and a breakdown by domain.",
       mockNotice: "Pass mark: {s}/1000. Here the score is proportional to the number of correct answers; the real exam uses a weighted score, and its questions are different.",
       resume: "Resume ({t} left)", restart: "Start over", start: "Start the mock exam", myMocks: "Your mock exams", goodAnswers: "{a}/{b} correct answers",
       answered: "{a}/{b} answered", finish: "Finish", questionN: "Question {a} / {b}", flag: "Flag for review", prev: "← Previous", next: "Next →", gotoQ: "Go to a question",
@@ -577,6 +577,24 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     var out = [];
     e.domaines.forEach(function (d) { d.questions.forEach(function (q) { out.push({ n: q.n, q: q.q, options: q.options, a: q.a, why: q.why, src: q.src, dom: d.id, domNom: d.nom }); }); });
     return out;
+  }
+  // Tirage de DRAW questions dans la banque : au prorata du poids officiel des domaines,
+  // les questions jamais vues d'abord (au hasard), puis les autres. Banque <= DRAW : tout.
+  var DRAW = 50;
+  function drawSet(e, pool) {
+    if (pool.length <= DRAW) return pool.slice();
+    var r = S.q[e.id] || {};
+    var doms = e.domaines.map(function (d) {
+      var qs = pool.filter(function (q) { return q.dom === d.id; });
+      var unseen = shuffle(qs.filter(function (q) { return r[q.n] == null; })), seen = shuffle(qs.filter(function (q) { return r[q.n] != null; }));
+      return { qs: unseen.concat(seen), w: qs.length ? (d.poids[0] + d.poids[1]) / 2 || 1 : 0, k: 0, f: 0 };
+    });
+    var W = doms.reduce(function (s, x) { return s + x.w; }, 0) || 1, left = DRAW;
+    doms.forEach(function (x) { var exact = DRAW * x.w / W; x.k = Math.min(Math.floor(exact), x.qs.length); x.f = exact - Math.floor(exact); left -= x.k; });
+    // Places restantes : aux plus grandes parts décimales, puis à tout domaine qui a encore des questions
+    doms.slice().sort(function (a, b) { return b.f - a.f; }).concat(doms).forEach(function (x) { if (left > 0 && x.k < x.qs.length) { x.k++; left--; } });
+    while (left > 0) { var more = doms.filter(function (x) { return x.k < x.qs.length; }); if (!more.length) break; more[Math.floor(Math.random() * more.length)].k++; left--; }
+    return doms.reduce(function (out, x) { return out.concat(x.qs.slice(0, x.k)); }, []);
   }
   function stats(key, qs) {
     var r = S.q[key] || {}, seen = 0, ok = 0;
@@ -794,9 +812,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         return '<a href="#' + e.id + "-" + d.id + '" class="' + (cur === d.id ? "active" : "") + '"><span>' + esc(d.nom) + "</span><small>" + pw(d) + " %</small></a>";
       }).join("") +
       '<span class="lbl">' + esc(t("practice")) + "</span>" +
-      '<a href="#' + e.id + '-entrainement" class="' + (cur === "entrainement" ? "active" : "") + '"><span>' + esc(t("allQs")) + "</span><small>" + qs.length + "</small></a>" +
+      '<a href="#' + e.id + '-entrainement" class="' + (cur === "entrainement" ? "active" : "") + '"><span>' + esc(t("allQs")) + "</span><small>" + Math.min(qs.length, DRAW) + "</small></a>" +
       (st.missed.length ? '<a href="#' + e.id + '-erreurs" class="' + (cur === "erreurs" ? "active" : "") + '"><span>' + esc(t("reviewMistakes")) + "</span><small>" + st.missed.length + "</small></a>" : "") +
-      '<a href="#' + e.id + '-examen" class="' + (cur === "examen" ? "active" : "") + '"><span>' + esc(t("mockExam")) + "</span><small>" + esc(t("min", { n: Math.round(qs.length * e.minutes_par_question) })) + "</small></a>";
+      '<a href="#' + e.id + '-examen" class="' + (cur === "examen" ? "active" : "") + '"><span>' + esc(t("mockExam")) + "</span><small>" + esc(t("min", { n: Math.round(Math.min(qs.length, DRAW) * e.minutes_par_question) })) + "</small></a>";
   }
   function examHeader(e, sub) {
     var f = FAM[e.famille];
@@ -810,14 +828,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       var dq = d.questions, seen = dq.filter(function (q) { return r[q.n] != null; }).length, ok = dq.filter(function (q) { return r[q.n] === true; }).length;
       return '<a class="dom" href="#' + e.id + "-" + d.id + '"><span class="k">' + d.id.toUpperCase() + "</span><div><div>" + esc(d.nom) + '</div><div class="w">' + esc(t("ofExam", { p: pw(d) })) + " · " + esc(nq(dq.length)) + '</div></div><div class="pct"><span>' + esc(seen ? t("rightOf", { a: ok, b: dq.length }) : t("notStarted")) + '</span><div class="meter"><i style="width:' + Math.round(100 * ok / dq.length) + '%"></i></div></div></a>';
     }).join("");
-    var cur = S.cur && S.cur.id === e.id, mins = Math.round(qs.length * e.minutes_par_question);
+    var cur = S.cur && S.cur.id === e.id, mins = Math.round(Math.min(qs.length, DRAW) * e.minutes_par_question);
     var main = examHeader(e) +
       '<header class="page-head"><span class="code-tag">' + esc(e.code) + " · " + esc(e.niveau) + " · " + esc(e.editeur) + "</span><h1>" + esc(e.titre) + "</h1></header>" +
       frNotice(e) +
       (e.intro ? '<div class="prose">' + md(e.intro) + "</div>" : "") +
       '<div class="actions">' +
-      '<a class="action main-act" href="#' + e.id + '-examen"><b>' + esc(cur ? t("resumeMock") : t("mockExam")) + "</b><span>" + esc(t("mockMeta", { n: qs.length, m: mins, s: e.seuil })) + "</span></a>" +
-      '<a class="action" href="#' + e.id + '-entrainement"><b>' + esc(t("practiceT")) + "</b><span>" + esc(t("practiceMeta", { a: st.seen, b: qs.length })) + "</span></a>" +
+      '<a class="action main-act" href="#' + e.id + '-examen"><b>' + esc(cur ? t("resumeMock") : t("mockExam")) + "</b><span>" + esc(t("mockMeta", { n: Math.min(qs.length, DRAW), m: mins, s: e.seuil })) + "</span></a>" +
+      '<a class="action" href="#' + e.id + '-entrainement"><b>' + esc(t("practiceT")) + "</b><span>" + esc(t("practiceMeta", { n: Math.min(qs.length, DRAW), a: st.seen, b: qs.length })) + "</span></a>" +
       (st.missed.length ? '<a class="action" href="#' + e.id + '-erreurs"><b>' + esc(t("reviewMistakes")) + "</b><span>" + esc(t("missedMeta", { n: nq(st.missed.length) })) + "</span></a>" : "") +
       "</div>" +
       (mocks.length ? '<p class="small">' + esc(t("mocksLine", { n: mocks.length, b: best, l: mocks[mocks.length - 1].score })) + "</p>" : "") +
@@ -846,8 +864,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   // ---------- Entraînement (correction immédiate) ----------
   var P = null;
   function startPractice(o) {
-    if (!o.items.length) { location.hash = "#" + o.back; return; }
-    P = { o: o, items: shuffle(o.items.slice()).map(function (q) { return { q: q, opts: shuffle(q.options.slice()).map(function (x, k) { return { l: "abcd"[k], orig: x.l, t: x.t }; }) }; }), i: 0, picks: [] };
+    var items = o.pick ? o.pick() : o.items;
+    if (!items.length) { location.hash = "#" + o.back; return; }
+    P = { o: o, items: shuffle(items.slice()).map(function (q) { return { q: q, opts: shuffle(q.options.slice()).map(function (x, k) { return { l: "abcd"[k], orig: x.l, t: x.t }; }) }; }), i: 0, picks: [] };
     drawPQ();
   }
   function pLayout(inner) {
@@ -900,15 +919,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   // ---------- Examen blanc ----------
   var M = null, tick = null;
   function newMock(e) {
-    var qs = shuffle(examQuestions(e));
+    var qs = shuffle(drawSet(e, examQuestions(e)));
     return { id: e.id, start: Date.now(), dur: Math.round(qs.length * e.minutes_par_question * 60), i: 0,
       items: qs.map(function (q) { return { n: q.n, opts: shuffle(["a", "b", "c", "d"]) }; }), ans: {}, flag: {} };
   }
   function viewMockIntro(e) {
-    var qs = examQuestions(e), mins = Math.round(qs.length * e.minutes_par_question);
+    var qs = examQuestions(e), mins = Math.round(Math.min(qs.length, DRAW) * e.minutes_par_question);
     var cur = S.cur && S.cur.id === e.id;
     var main = examHeader(e, t("mockExam")) +
-      '<header class="page-head"><span class="code-tag">' + esc(e.code) + "</span><h1>" + esc(t("mockExam")) + '</h1><p class="lede">' + esc(t("mockLede", { n: qs.length, m: mins })) + "</p></header>" +
+      '<header class="page-head"><span class="code-tag">' + esc(e.code) + "</span><h1>" + esc(t("mockExam")) + '</h1><p class="lede">' + esc(t("mockLede", { n: Math.min(qs.length, DRAW), m: mins }) + (qs.length > DRAW ? " " + t("mockBank", { n: DRAW, b: qs.length }) : "")) + "</p></header>" +
       frNotice(e) +
       '<div class="notice">' + esc(t("mockNotice", { s: e.seuil })) + "</div>" +
       '<div class="row">' + (cur ? '<button class="btn dark" id="resume" type="button">' + esc(t("resume", { t: fmtTime(S.cur.dur - (Date.now() - S.cur.start) / 1000) })) + "</button>" : "") +
@@ -1077,7 +1096,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         if (!r) viewExam(e);
         else if (dom && !dm[2]) viewDomain(e, dom);
         else if (dom && dm[2]) startPractice(Object.assign({}, base, { items: qs.filter(function (q) { return q.dom === dom.id; }), side: examSide(e, dom.id), crumbs: examHeader(e, dom.nom), title: t("practiceOn", { d: dom.nom }) }));
-        else if (r === "entrainement") startPractice(Object.assign({}, base, { items: qs, side: examSide(e, "entrainement"), crumbs: examHeader(e, t("practiceT")), title: t("practiceAll") }));
+        else if (r === "entrainement") startPractice(Object.assign({}, base, { items: qs, pick: function () { return drawSet(e, qs); }, side: examSide(e, "entrainement"), crumbs: examHeader(e, t("practiceT")), title: t("practiceAll") }));
         else if (r === "erreurs") {
           var miss = stats(e.id, qs).missed;
           if (!miss.length) { location.replace("#" + e.id); return; }
