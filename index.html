@@ -260,6 +260,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .verdict.ok { background: var(--ok-soft); }
 .verdict.ko { background: var(--bad-soft); }
 .verdict a { font-size: 0.86rem; }
+.report { align-self: flex-start; background: none; border: 0; padding: 2px 0; font: inherit; font-size: 0.82rem; color: var(--muted, inherit); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; opacity: .8; }
+.report:hover, .report:focus-visible { opacity: 1; }
+.report-form { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.report-form textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 0.92rem; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: inherit; resize: vertical; }
 .kbd { font: 0.76rem var(--f-mono); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
 
 /* Examen blanc */
@@ -418,7 +422,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       mockChip: "Blanc : {s}", inProgress: "En cours", nQuestions: "{n} questions", nDomains: "{n} domaines", seen: "{a}/{b} vues", frOnly: "En français",
       formationH: "Formation : les cours Claude Academy", formationP: "Résumés en français, exercices et quiz. Ce sont les cours qu'Anthropic recommande pour préparer CCAR-F.",
       sectionsRead: "{a}/{b} sections lues", quizScore: "Quiz : {a}/{b}",
-      overview: "Présentation", byDomain: "Fiches par domaine", practice: "S'entraîner", allQs: "Série au hasard", reviewMistakes: "Revoir mes erreurs", mockExam: "Examen blanc", min: "{n} min",
+      overview: "Présentation", byDomain: "Fiches par domaine", practice: "S'entraîner", allQs: "Série au hasard", report: "Signaler cette question", reportPh: "Qu'est-ce qui ne va pas ? (option défendable, erreur, faute…)", reportSend: "Envoyer", reportCancel: "Annuler", reportThanks: "Merci, signalement enregistré.", reportErr: "Envoi impossible pour l'instant. Réessaie plus tard.", reportEmpty: "Décris le problème en quelques mots.", reviewMistakes: "Revoir mes erreurs", mockExam: "Examen blanc", min: "{n} min",
       resumeMock: "Reprendre l'examen blanc", mockMeta: "{n} questions · {m} min · seuil {s}/1000", practiceT: "Entraînement", practiceMeta: "{n} questions au hasard, corrigées une à une · {a}/{b} de la banque déjà vues",
       missedMeta: "{n} à reprendre", mocksLine: "Examens blancs : {n} · meilleur score {b}/1000, dernier {l}/1000.",
       officialProg: "Programme officiel", ofExam: "{p} % de l'examen", qCount1: "1 question", qCountN: "{n} questions", rightOf: "{a}/{b} justes", notStarted: "Pas commencé",
@@ -462,7 +466,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       mockChip: "Mock: {s}", inProgress: "In progress", nQuestions: "{n} questions", nDomains: "{n} domains", seen: "{a}/{b} seen", frOnly: "French only",
       formationH: "Course: the Claude Academy courses", formationP: "Summaries in French, with exercises and quizzes. These are the courses Anthropic recommends to prepare for CCAR-F.",
       sectionsRead: "{a}/{b} sections read", quizScore: "Quiz: {a}/{b}",
-      overview: "Overview", byDomain: "Study sheets by domain", practice: "Practice", allQs: "Random set", reviewMistakes: "Review my mistakes", mockExam: "Mock exam", min: "{n} min",
+      overview: "Overview", byDomain: "Study sheets by domain", practice: "Practice", allQs: "Random set", report: "Report this question", reportPh: "What's wrong? (defensible option, error, typo…)", reportSend: "Send", reportCancel: "Cancel", reportThanks: "Thanks, report saved.", reportErr: "Couldn't send for now. Try again later.", reportEmpty: "Describe the problem in a few words.", reviewMistakes: "Review my mistakes", mockExam: "Mock exam", min: "{n} min",
       resumeMock: "Resume the mock exam", mockMeta: "{n} questions · {m} min · pass mark {s}/1000", practiceT: "Practice", practiceMeta: "{n} random questions, graded one by one · {a}/{b} of the bank already seen",
       missedMeta: "{n} to retry", mocksLine: "Mock exams: {n} · best score {b}/1000, last {l}/1000.",
       officialProg: "Official skills outline", ofExam: "{p}% of the exam", qCount1: "1 question", qCountN: "{n} questions", rightOf: "{a}/{b} correct", notStarted: "Not started",
@@ -534,6 +538,44 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   // ---------- Utilitaires ----------
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  // ---------- Signalement d'une question (base de l'artifact ; absent sur GitHub Pages) ----------
+  var DBR = null;
+  try {
+    if (window.claude && typeof window.claude.use === "function") {
+      window.claude.use("db").then(function (db) { DBR = db || null; armReports(); }, function () { DBR = null; });
+    }
+  } catch (err) { DBR = null; }
+  function reportBtn(key, n) {
+    return '<button type="button" class="report" data-key="' + esc(key) + '" data-n="' + esc(n) + '"' + (DBR ? "" : " hidden") + ">" + esc(t("report")) + "</button>";
+  }
+  function armReports() { if (!DBR) return; document.querySelectorAll(".report[hidden]").forEach(function (b) { b.hidden = false; }); }
+  function openReport(b) {
+    var nx = b.nextElementSibling;
+    if (nx && nx.classList.contains("report-form")) { var ta0 = nx.querySelector("textarea"); if (ta0) ta0.focus(); return; }
+    var f = document.createElement("div"); f.className = "report-form";
+    var ta = document.createElement("textarea"); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = t("reportPh"); ta.setAttribute("aria-label", t("report"));
+    var row = document.createElement("div"); row.className = "row";
+    var send = document.createElement("button"); send.type = "button"; send.className = "btn primary"; send.textContent = t("reportSend");
+    var cancel = document.createElement("button"); cancel.type = "button"; cancel.className = "btn"; cancel.textContent = t("reportCancel");
+    var msg = document.createElement("p"); msg.className = "small"; msg.setAttribute("role", "status");
+    row.appendChild(send); row.appendChild(cancel); f.appendChild(ta); f.appendChild(row); f.appendChild(msg);
+    b.parentNode.insertBefore(f, b.nextSibling); ta.focus();
+    cancel.addEventListener("click", function () { f.remove(); b.focus(); });
+    send.addEventListener("click", function () {
+      var txt = ta.value.trim();
+      if (!txt) { msg.textContent = t("reportEmpty"); ta.focus(); return; }
+      if (!DBR) { msg.textContent = t("reportErr"); return; }
+      send.disabled = true;
+      DBR.collection("signalements").add({ examen: String(b.dataset.key), n: Number(b.dataset.n), langue: L, commentaire: txt, date: new Date().toISOString(), statut: "nouveau" })
+        .then(function () { f.textContent = ""; var ok = document.createElement("p"); ok.className = "small"; ok.setAttribute("role", "status"); ok.textContent = t("reportThanks"); f.appendChild(ok); b.disabled = true; })
+        .catch(function () { msg.textContent = t("reportErr"); send.disabled = false; });
+    });
+  }
+  document.addEventListener("click", function (ev) {
+    var b = ev.target && ev.target.closest ? ev.target.closest(".report") : null;
+    if (b && !b.disabled) { ev.preventDefault(); openReport(b); }
+  });
   function md(s) { return window.marked ? marked.parse(s || "", { gfm: true }) : "<p>" + esc(s) + "</p>"; }
   function mi(s) { return window.marked ? marked.parseInline(s || "", { gfm: true }) : esc(s); }
   function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
@@ -895,7 +937,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     });
     var bar = view.querySelector(".qbar i"); if (bar) bar.style.width = Math.round(100 * (P.i + 1) / P.items.length) + "%";
     var last = P.i === P.items.length - 1;
-    document.getElementById("after").innerHTML = '<div class="verdict ' + (ok ? "ok" : "ko") + '"><b>' + esc(ok ? t("rightAns") : t("expected", { l: right.l })) + "</b><span>" + mi(q.why) + "</span>" + (q.src ? '<a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a>" : "") + "</div>" +
+    document.getElementById("after").innerHTML = '<div class="verdict ' + (ok ? "ok" : "ko") + '"><b>' + esc(ok ? t("rightAns") : t("expected", { l: right.l })) + "</b><span>" + mi(q.why) + "</span>" + (q.src ? '<a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a>" : "") + reportBtn(P.o.key, q.n) + "</div>" +
       '<div class="row" style="margin-top:14px"><button class="btn primary" id="next" type="button">' + esc(last ? t("seeResult") : t("nextQ")) + "</button></div>";
     var nx = document.getElementById("next"); nx.addEventListener("click", pNext); nx.focus({ preventScroll: true });
   }
@@ -908,7 +950,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     pLayout(o.crumbs + '<header class="page-head"><span class="code-tag">' + esc(o.label) + "</span><h1>" + esc(t("summary", { a: score, b: n })) + '</h1><p class="lede">' + esc(wrong.length ? t("summaryKo") : t("summaryOk")) + "</p></header>" +
       (wrong.length ? '<div class="review">' + wrong.map(function (q) {
         var a = q.options.filter(function (x) { return x.l === q.a; })[0];
-        return "<details open><summary><span class=\"st ko-t\">✗</span><span>" + mi(q.q) + '</span></summary><div class="body"><p><b>' + esc(t("answer")) + "</b> " + mi(a ? a.t : "") + "</p><p>" + mi(q.why) + "</p>" + (q.src ? '<p><a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a></p>" : "") + "</div></details>";
+        return "<details open><summary><span class=\"st ko-t\">✗</span><span>" + mi(q.q) + '</span></summary><div class="body"><p><b>' + esc(t("answer")) + "</b> " + mi(a ? a.t : "") + "</p><p>" + mi(q.why) + "</p>" + (q.src ? '<p><a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a></p>" : "") + reportBtn(o.key, q.n) + "</div></details>";
       }).join("") + "</div>" : "") +
       '<div class="row">' + (wrong.length ? '<a class="btn primary" href="#' + o.errHash + '">' + esc(t("reviewMistakes")) + " (" + wrong.length + ")</a>" : "") + '<button class="btn" id="again" type="button">' + esc(t("again")) + '</button><a class="btn" href="#' + o.back + '">' + esc(t("back")) + "</a></div>");
     document.getElementById("again").addEventListener("click", function () { startPractice(o); });
@@ -1009,7 +1051,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     var rev = done.items.map(function (x, k) {
       var q = byN[x.n], pick = done.ans[x.n], good = pick === q.a, a = q.options.filter(function (o) { return o.l === q.a; })[0], p = q.options.filter(function (o) { return o.l === pick; })[0];
       return '<details' + (good ? "" : " open") + '><summary><span class="st ' + (good ? "ok-t" : "ko-t") + '">' + (good ? "✓" : "✗") + " " + (k + 1) + "</span><span>" + mi(q.q) + '</span></summary><div class="body">' +
-        (good ? "" : "<p><b>" + esc(t("yourAns")) + "</b> " + (p ? mi(p.t) : "<i>" + esc(t("none")) + "</i>") + "</p>") + "<p><b>" + esc(t("goodAns")) + "</b> " + mi(a.t) + "</p><p>" + mi(q.why) + '</p><p class="small">' + esc(q.domNom) + ' · <a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a></p></div></details>";
+        (good ? "" : "<p><b>" + esc(t("yourAns")) + "</b> " + (p ? mi(p.t) : "<i>" + esc(t("none")) + "</i>") + "</p>") + "<p><b>" + esc(t("goodAns")) + "</b> " + mi(a.t) + "</p><p>" + mi(q.why) + '</p><p class="small">' + esc(q.domNom) + ' · <a href="' + esc(q.src) + '" target="_blank" rel="noopener">' + esc(t("source")) + "</a></p>" + reportBtn(e.id, q.n) + "</div></details>";
     }).join("");
     var main = examHeader(e, t("mockResult")) +
       '<header class="page-head"><span class="code-tag">' + esc(e.code) + " · " + esc(t("mockExam")) + "</span><h1>" + esc(pass ? t("passed") : t("notYet")) + "</h1></header>" +
@@ -1111,6 +1153,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   }
   document.addEventListener("keydown", function (ev) {
     if (ev.ctrlKey || ev.metaKey || ev.altKey || /input|textarea/i.test((ev.target.tagName || "")) && ev.target.type !== "checkbox") return;
+    if (ev.target && ev.target.closest && ev.target.closest(".report, .report-form")) return;
     var k = ev.key.toLowerCase();
     if (P && !P.done) {
       if (/^[a-d]$/.test(k) && P.picks.length === P.i) { ev.preventDefault(); var x = P.items[P.i].opts.filter(function (o) { return o.l === k; })[0]; if (x) pAnswer(x.orig); }
