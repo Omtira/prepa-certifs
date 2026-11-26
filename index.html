@@ -391,7 +391,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <div class="wrap" id="view"><p class="small">Chargement… / Loading…</p></div>
 <footer class="foot" id="foot"></footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js" integrity="sha512-xeUh+KxNyTufZOje++oQHstlMQ8/rpyzPuM+gjMFYK3z5ILJGE7l2NvYL+XfliKURMpBIKKp1XoPN/qswlSMFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 (function () {
   "use strict";
@@ -576,6 +576,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     var b = ev.target && ev.target.closest ? ev.target.closest(".report") : null;
     if (b && !b.disabled) { ev.preventDefault(); openReport(b); }
   });
+  // Le contenu ne passe jamais du HTML brut à la page : il s'affiche comme du texte (« <resources> » reste lisible),
+  // et seuls les liens https:// ou internes (#) deviennent des liens.
+  if (window.marked) marked.use({ renderer: {
+    html: function (h) { return esc(h); },
+    link: function (href, title, text) {
+      if (!/^(https:\/\/|#)/i.test(href || "")) return text;
+      return '<a href="' + esc(href) + '"' + (title ? ' title="' + esc(title) + '"' : "") + ">" + text + "</a>";
+    }
+  } });
   function md(s) { return window.marked ? marked.parse(s || "", { gfm: true }) : "<p>" + esc(s) + "</p>"; }
   function mi(s) { return window.marked ? marked.parseInline(s || "", { gfm: true }) : esc(s); }
   function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
@@ -1110,7 +1119,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   function routeTo(h) { if (location.hash === "#" + h) route(); else location.hash = "#" + h; }
   function route() {
     if (!D) return;
-    var h = decodeURIComponent((location.hash || "").replace(/^#/, "")) || "accueil", m;
+    var h, m;
+    try { h = decodeURIComponent((location.hash || "").replace(/^#/, "")) || "accueil"; } catch (err) { h = "accueil"; } // « #%E0 » mal formé : retour à l'accueil
     if (M && !(h === M.id + "-examen")) { clearInterval(tick); M = null; }
     P = null;
     var fam = null;
