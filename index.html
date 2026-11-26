@@ -1178,6 +1178,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       if (file !== (L === "en" ? "data-en.json" : "data.json")) return; // langue changée pendant le chargement : la réponse la plus récente s'applique
       apply(d); if (M) M = null; route();
     }).catch(function () {
+      if (file !== (L === "en" ? "data-en.json" : "data.json")) return; // échec d'une langue abandonnée : la page affichée reste
       view.innerHTML = '<p class="notice">' + esc(t("loadErr")) + "</p>";
     });
   }
